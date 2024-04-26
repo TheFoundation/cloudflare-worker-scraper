@@ -1,9 +1,9 @@
 {
   "name": "metadata-scraper",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "author": {
-    "name": "Robert Shaw ",
+    "name": "Robert Shaw",
     "url": "https://robertshaw.id"
   },
   "scripts": {

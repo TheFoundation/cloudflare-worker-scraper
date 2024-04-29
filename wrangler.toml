@@ -1,5 +1,5 @@
 name = "metafy"
-main = "src/worker.ts"
+main= "src/index.ts"
 compatibility_date = "2024-04-01"
 
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
@@ -7,7 +7,7 @@ compatibility_date = "2024-04-01"
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables
 [vars]
 # MY_VARIABLE = "production_value"
-token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+API_TOKEN = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 # Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
 # Docs: https://developers.cloudflare.com/workers/runtime-apis/kv

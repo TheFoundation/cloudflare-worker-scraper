@@ -1,3 +1,5 @@
+import { Hono } from 'hono'
+import { env } from 'hono/adapter'
 import { TidyURL } from 'tidy-url'
 
 import {
@@ -7,23 +9,60 @@ import {
 import { linkType } from './link-type'
 import Scraper from './scraper'
 import { scraperRules } from './scraper-rules'
-import { ScrapeResponse } from '.'
 
-addEventListener('fetch', (event: FetchEvent) => {
-  event.respondWith(handleRequest(event.request))
-})
+export interface Response<T> {
+  code: number
+  message: string
+  data: T
+}
 
-export async function handleRequest(request: Request) {
-  const searchParams = new URL(request.url).searchParams
+type JSONValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JSONValue[]
+  | { [key: string]: JSONValue }
+
+interface JSONObject {
+  [k: string]: JSONValue
+}
+
+export type ScrapeResponse = string | string[] | JSONObject
+
+const app = new Hono()
+
+app.get('/', async (c) => {
+  const { token } = env<{ token: string }>(c)
+  let url = c.req.query('url')
+  const cleanUrl = c.req.query('cleanUrl')
+
   const scraper = new Scraper()
   let response: Record<string, ScrapeResponse>
-  let url = searchParams.get('url')
-  const cleanUrl = searchParams.get('cleanUrl')
+
+  const Authorization = c.req.header('Authorization')
+  if (token) {
+    if (!Authorization) {
+      return c.json({
+        code: 401,
+        message: 'Unauthorized',
+      } as Response<null>)
+    }
+
+    if (Authorization !== `Bearer ${token}`) {
+      return c.json({
+        code: 401,
+        message: 'Unauthorized',
+      } as Response<null>)
+    }
+  }
 
   if (!url) {
-    return generateErrorJSONResponse(
-      'Please provide a `url` query parameter, e.g. ?url=https://example.com'
-    )
+    return c.json({
+      code: 400,
+      message: 'Bad Request',
+      data: 'Please provide a `url` query parameter, e.g. ?url=https://example.com',
+    } as Response<string>)
   }
 
   if (url && !url.match(/^[a-zA-Z]+:\/\//)) {
@@ -68,8 +107,17 @@ export async function handleRequest(request: Request) {
       response.jsonld = JSON.parse(response.jsonld as string)
     }
   } catch (error) {
-    return generateErrorJSONResponse(error, url)
+    return c.json({
+      code: 500,
+      message: 'Internal Server Error',
+    } as Response<null>)
   }
 
-  return generateJSONResponse(response)
-}
+  return c.json({
+    code: 200,
+    message: 'OK',
+    data: response as ScrapeResponse,
+  } as Response<ScrapeResponse>)
+})
+
+export default app

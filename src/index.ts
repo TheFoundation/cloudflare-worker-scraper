@@ -33,7 +33,7 @@ export type ScrapeResponse = string | string[] | JSONObject
 const app = new Hono()
 
 app.get('/', async (c) => {
-  const { token } = env<{ token: string }>(c)
+  const { API_TOKEN: apiToken } = env<{ API_TOKEN: string }>(c)
   let url = c.req.query('url')
   const cleanUrl = c.req.query('cleanUrl')
 
@@ -41,7 +41,7 @@ app.get('/', async (c) => {
   let response: Record<string, ScrapeResponse>
 
   const Authorization = c.req.header('Authorization')
-  if (token) {
+  if (apiToken) {
     if (!Authorization) {
       return c.json({
         code: 401,
@@ -49,7 +49,7 @@ app.get('/', async (c) => {
       } as Response<null>)
     }
 
-    if (Authorization !== `Bearer ${token}`) {
+    if (Authorization !== `Bearer ${apiToken}`) {
       return c.json({
         code: 401,
         message: 'Unauthorized',

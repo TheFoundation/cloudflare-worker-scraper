@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { env } from 'hono/adapter'
 import { TidyURL } from 'tidy-url'
+import { isString } from 'lodash-es'
 
 import Scraper from './scraper'
 import { generateErrorJSONResponse } from './json-response'
@@ -95,10 +96,20 @@ app.get('/', async (c) => {
     }
 
     // Add unshortened url
-    response.url = unshortenedUrl
+    response.link = unshortenedUrl
+
+    // Add domain
+    const { origin } = new URL(unshortenedUrl)
+    response.domain = origin
 
     // Add url type
     response.type = linkType(url, false)
+
+    if (isString(response.logo)) {
+      if (response.logo && !response.logo.match(/^[a-zA-Z]+:\/\//)) {
+        response.logo = `${origin}${response.logo}`
+      }
+    }
 
     if (checkIsRepo(url)) {
       const originalOGImage = await getOriginalOGImageOfRepo(url)

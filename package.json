@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240423.0",
+    "@types/lodash-es": "^4.17.12",
     "serve": "^14.2.3",
     "typescript": "^5.4.5",
     "vite": "^4.5.3",
@@ -21,10 +22,12 @@
     "wrangler": "^3.52.0"
   },
   "dependencies": {
+    "dayjs": "^1.11.11",
     "file-extension": "^4.0.5",
     "hono": "^4.2.8",
     "html-entities": "^2.5.2",
     "isomorphic-dompurify": "^1.13.0",
+    "lodash-es": "^4.17.21",
     "tidy-url": "^1.16.0",
     "top-user-agents": "^1.0.66",
     "unique-random-array": "^3.0.0"

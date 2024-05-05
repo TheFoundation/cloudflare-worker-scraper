@@ -2,13 +2,11 @@ import { Hono } from 'hono'
 import { env } from 'hono/adapter'
 import { TidyURL } from 'tidy-url'
 
-import {
-  generateErrorJSONResponse,
-  generateJSONResponse,
-} from './json-response'
-import { linkType } from './link-type'
 import Scraper from './scraper'
+import { generateErrorJSONResponse } from './json-response'
+import { linkType } from './link-type'
 import { scraperRules } from './scraper-rules'
+import { checkIsRepo, getOriginalOGImageOfRepo } from './ogimage-repo'
 
 export interface Response<T> {
   code: number
@@ -100,7 +98,12 @@ app.get('/', async (c) => {
     response.url = unshortenedUrl
 
     // Add url type
-    response.urlType = linkType(url, false)
+    response.type = linkType(url, false)
+
+    if (checkIsRepo(url)) {
+      const originalOGImage = await getOriginalOGImageOfRepo(url)
+      response.originalOGImage = originalOGImage
+    }
 
     // Parse JSON-LD
     if (response?.jsonld) {

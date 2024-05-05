@@ -34,7 +34,7 @@ curl https://metafy.xiaoluoboding.workers.dev/?url=https://onetab.group
   "keywords": "",
   "jsonld": "",
   "url": "https://www.onetab.group/",
-  "urlType": "link"
+  "type": "link"
 }
 ```
 

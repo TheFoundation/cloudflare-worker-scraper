@@ -8,7 +8,7 @@
   },
   "scripts": {
     "deploy": "wrangler deploy",
-    "start": "wrangler dev",
+    "dev": "wrangler dev --port 7878",
     "test": "vitest",
     "serve:test": "serve test -p 1234"
   },

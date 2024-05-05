@@ -61,7 +61,7 @@ export async function handleRequest(request: Request) {
     response.url = unshortenedUrl
 
     // Add url type
-    response.urlType = linkType(url, false)
+    response.type = linkType(url, false)
 
     // Parse JSON-LD
     if (response?.jsonld) {

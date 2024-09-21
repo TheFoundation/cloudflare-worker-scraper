@@ -1,0 +1,36 @@
+name: Wrangler deploy with TOKEN
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  check-secret:
+      runs-on: ubuntu-latest
+      outputs:
+        my-key: ${{ steps.my-key.outputs.defined }}
+      steps:
+          - id: my-key
+            env:
+                MY_KEY: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            if: "${{ env.MY_KEY != '' }}"
+            run: echo "::set-output name=defined::true"
+
+  job1:
+      runs-on: ubuntu-latest
+      needs: [check-secret]
+      if: needs.check-secret.outputs.my-key == 'true'
+      steps:
+        - run: echo "This command is executed because CLOUDFLARE_API_TOKEN secret is set"
+        - uses: actions/checkout@v4
+        - name: Deploy
+          uses: cloudflare/wrangler-action@v3
+          with:
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+  job2:
+      runs-on: ubuntu-latest
+      needs: [check-secret]
+      if: needs.check-secret.outputs.my-key != 'true'
+      steps:
+        - run: echo "This command is executed if CLOUDFLARE_API_TOKEN secret IS empty"

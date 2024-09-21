@@ -7,7 +7,7 @@
 Enter a valid `$URL` as params
 
 ```bash
-curl https://metafy.xiaoluoboding.workers.dev/?url=$URL
+curl https://yourworker.yourdomain.workers.dev/?url=$URL
 ```
 
 ## Example
@@ -15,7 +15,7 @@ curl https://metafy.xiaoluoboding.workers.dev/?url=$URL
 ### Input
 
 ```bash
-curl https://metafy.xiaoluoboding.workers.dev/?url=https://onetab.group
+curl https://yourworker.yourdomain.workers.dev/?url=https://newstral.com
 ```
 
 ### Output
@@ -39,6 +39,15 @@ curl https://metafy.xiaoluoboding.workers.dev/?url=https://onetab.group
 ```
 
 ## Deploy your own instance
+
+### GitHub Actions
+
+1. clone the repo
+2. define a secret CLOUDFLARE_API_TOKEN ( if the value is "public", anyone can access your service )
+
+
+
+### Vercel 
 
 Deploy your `Metafy` on your own instance with one-click.
 

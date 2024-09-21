@@ -39,8 +39,15 @@ app.get('/', async (c) => {
   const scraper = new Scraper()
   let response: Record<string, ScrapeResponse>
 
-  const Authorization = c.req.header('Authorization')
-  if (apiToken) {
+  let Authorization = c.req.header('Authorization')
+  if (!Authorization &&   c.req.query('token')) {
+    Authorization = "Bearer "+c.req.query('token')
+  }
+  //console.log("apiToken")
+  //console.log(apiToken)
+  //console.log(Authorization)
+  
+  if (apiToken && ( apiToken !== "public" )) {
     if (!Authorization) {
       return c.json({
         code: 401,
@@ -48,8 +55,8 @@ app.get('/', async (c) => {
       } as Response<null>)
     }
 
-    if (Authorization !== `Bearer ${apiToken}`) {
-      return c.json({
+    if ((apiToken !==  "public" ) && ( Authorization !== `Bearer ${apiToken}` ) ){
+      return c.json({ 
         code: 401,
         message: 'Unauthorized',
       } as Response<null>)

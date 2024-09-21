@@ -1,4 +1,4 @@
-name = "metafy"
+name = "metascrape"
 main= "src/index.ts"
 compatibility_date = "2024-04-01"
 
@@ -50,3 +50,7 @@ API_TOKEN = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 # [[migrations]]
 # tag = "v1"
 # new_classes = ["MyDurableObject"]
+
+# Get started with persistent logs by adding the snippet below to your wrangler.toml:
+[observability]
+enabled = true

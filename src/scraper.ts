@@ -1,5 +1,5 @@
 import { decode } from 'html-entities'
-import { ScrapeResponse } from './worker'
+import { ScrapeResponse } from '.'
 import { randomUserAgent } from './randomUserAgent'
 import { FollowShortUrlResponse, followShortUrl } from './follow-short-url'
 import { generateErrorJSONResponse } from './json-response'

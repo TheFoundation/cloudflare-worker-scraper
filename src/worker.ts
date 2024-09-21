@@ -1,31 +1,19 @@
+import { TidyURL } from 'tidy-url'
+
 import {
   generateErrorJSONResponse,
   generateJSONResponse,
 } from './json-response'
 import { linkType } from './link-type'
 import Scraper from './scraper'
-import { TidyURL } from 'tidy-url'
 import { scraperRules } from './scraper-rules'
+import { ScrapeResponse } from '.'
 
 addEventListener('fetch', (event: FetchEvent) => {
   event.respondWith(handleRequest(event.request))
 })
 
-type JSONValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JSONValue[]
-  | { [key: string]: JSONValue }
-
-interface JSONObject {
-  [k: string]: JSONValue
-}
-
-export type ScrapeResponse = string | string[] | JSONObject
-
-async function handleRequest(request: Request) {
+export async function handleRequest(request: Request) {
   const searchParams = new URL(request.url).searchParams
   const scraper = new Scraper()
   let response: Record<string, ScrapeResponse>
@@ -73,7 +61,7 @@ async function handleRequest(request: Request) {
     response.url = unshortenedUrl
 
     // Add url type
-    response.urlType = linkType(url, false)
+    response.type = linkType(url, false)
 
     // Parse JSON-LD
     if (response?.jsonld) {

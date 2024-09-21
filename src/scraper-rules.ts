@@ -53,6 +53,14 @@ export const scraperRules: GetMetadataOptions[] = [
     ],
   },
   {
+    name: 'publisher',
+    multiple: false,
+    selectors: [
+      { selector: 'meta[name="twitter:site"]', attribute: 'content' },
+      { selector: 'meta[property="og:site_name"]', attribute: 'content' },
+    ],
+  },
+  {
     name: 'image',
     multiple: false,
     selectors: [
@@ -125,6 +133,18 @@ export const scraperRules: GetMetadataOptions[] = [
       { selector: 'img[itemprop="logo"]', attribute: 'src' },
       {
         selector: 'link[rel="apple-touch-icon-precomposed"]',
+        attribute: 'href',
+      },
+      {
+        selector: 'link[rel="apple-touch-icon"]',
+        attribute: 'href',
+      },
+      {
+        selector: 'link[rel="icon"]',
+        attribute: 'href',
+      },
+      {
+        selector: 'link[rel="shortcut icon"]',
         attribute: 'href',
       },
     ],
